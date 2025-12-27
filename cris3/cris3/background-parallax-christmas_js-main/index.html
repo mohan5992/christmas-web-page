@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    
+    <title>Christmas – Golden Winter Magic & Pro Game</title>
+
+    <style>
+        /* New Color Pattern & Animation Variables */
+        :root {
+            --first-color: #D4AF37; /* Festive Gold */
+            --title-color: #A2D2FF; /* Ice Blue */
+            --body-color: #051622;  /* Deep Night Blue */
+            --container-color: rgba(255, 255, 255, 0.05);
+            --white-color: #ffffff;
+        }
+
+        body {
+            background-color: var(--body-color);
+            color: var(--white-color);
+            overflow-x: hidden;
+            font-family: sans-serif;
+            margin: 0;
+        }
+
+        /* Navigation */
+        .nav {
+            height: 4.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav__logo {
+            display: flex;
+            align-items: center;
+            column-gap: .5rem;
+            font-weight: 700;
+            color: var(--first-color);
+            text-decoration: none;
+        }
+
+        .nav__actions {
+            display: flex;
+            align-items: center;
+            column-gap: 1rem;
+        }
+
+        /* Music Button Styling */
+        .music-btn {
+            background: none;
+            border: 2px solid var(--title-color);
+            color: var(--title-color);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-btn:hover {
+            background: var(--title-color);
+            color: var(--body-color);
+        }
+
+        .button--ghost {
+            border: 2px solid var(--first-color);
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--first-color);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            transition: .4s;
+            display: inline-flex;
+            align-items: center;
+            column-gap: .5rem;
+            animation: pulseGold 2s infinite;
+            text-decoration: none;
+        }
+
+        @keyframes pulseGold {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        /* Home & Parallax */
+        .home { position: relative; padding-top: 5rem; }
+        .home__title {
+            font-size: 3.5rem;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(162, 210, 255, 0.5);
+            z-index: 10;
+            position: relative;
+        }
+
+        .home__trineo { animation: floatSanta 6s ease-in-out infinite; }
+        @keyframes floatSanta {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(-4deg); }
+        }
+
+        /* Countdown Section */
+        .countdown {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, var(--body-color) 0%, #0b2d3f 100%);
+        }
+
+        .section__title {
+            color: var(--title-color);
+            text-align: center;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .countdown__container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .countdown__box {
+            background: rgba(162, 210, 255, 0.03);
+            padding: 3rem 1rem;
+            border-radius: 1.5rem;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(162, 210, 255, 0.1);
+            text-align: center;
+            transition: 0.4s;
+        }
+
+        .countdown__box:hover {
+            transform: translateY(-10px);
+            border-color: var(--first-color);
+        }
+
+        .countdown__number {
+            display: block;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--first-color);
+        }
+
+        /* ================= GAME ELEMENTS ================= */
+        .play-game-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--first-color), #f3cf6d);
+            color: var(--body-color);
+            padding: 16px 28px;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .play-game-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.6);
+        }
+
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 22, 34, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-container {
+            background: #0b2d3f;
+            width: 400px;
+            height: 600px;
+            position: relative;
+            border: 3px solid var(--first-color);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.25);
+        }
+
+        #game-canvas { display: block; background: radial-gradient(circle at top, #0d3b54, #051622); cursor: none; }
+        
+        .close-game {
+            position: absolute;
+            top: 15px; right: 20px;
+            color: #fff; font-size: 2.5rem;
+            cursor: pointer; z-index: 101;
+            transition: 0.3s;
+        }
+
+        .close-game:hover { transform: rotate(90deg); color: var(--first-color); }
+
+        .game-ui-overlay {
+            position: absolute;
+            top: 20px; left: 20px;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .score-text {
+            color: var(--first-color);
+            font-weight: 900;
+            font-size: 1.8rem;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .high-score {
+            color: var(--title-color);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <!-- Place your background music file at assets/audio/bg-music.mp3 -->
+        <source src="assets/audio/bg-music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <!-- Fallback: allow user to pick a local audio file if the packaged file is missing -->
+    <input id="musicFile" type="file" accept="audio/*" style="display:none" aria-hidden="true" />
+
+    <button class="play-game-btn" onclick="openGame()">
+        <i class="ri-gamepad-line ri-xl"></i>
+        <span>Play Gift Catch</span>
+    </button>
+
+    <div id="gameModal" class="game-modal">
+        <div class="game-container">
+            <span class="close-game" onclick="closeGame()">&times;</span>
+            <div class="game-ui-overlay">
+                <p class="score-text">GIFTS: <span id="score">0</span></p>
+                <p class="high-score">Best: <span id="highScore">0</span></p>
+            </div>
+            <canvas id="game-canvas"></canvas>
+        </div>
+    </div>
+
+    <header class="header" id="header">
+      <nav class="nav container">
+        <a href="#" class="nav__logo">
+          <img src="assets/img/logo.png" alt="" />
+          Christmas
+        </a>
+
+        <div class="nav__menu" id="nav-menu">
+          <ul class="nav__list">
+            <li class="nav__item"><a href="#home" class="nav__link active-link">Home</a></li>
+            <li class="nav__item"><a href="#about" class="nav__link">About</a></li>
+            <li class="nav__item"><a href="#countdown" class="nav__link">Countdown</a></li>
+          </ul>
+        </div>
+
+        <div class="nav__actions">
+          <button class="music-btn" id="musicToggle" title="Play Music">
+            <i class="ri-volume-mute-line" id="musicIcon"></i>
+          </button>
+
+          <a href="#countdown" class="button--ghost"> 
+            <i class="ri-time-line"></i> Time Left
+          </a>
+          <div class="nav__toggle" id="nav-toggle"><i class="ri-apps-2-line"></i></div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="main">
+      <section class="home section" id="home">
+        <h1 class="home__title">Merry Christmas</h1>
+        <img src="assets/img/home-moon.png" class="home__moon parallax" data-rellax-speed="-15" />
+        <img src="assets/img/home-trineo-santa.png" class="home__trineo parallax" data-rellax-speed="-2" />
+        <img src="assets/img/home-mountain-3.png" class="home__mountain-3 parallax" data-rellax-speed="-8" />
+        <img src="assets/img/home-mountain-2.png" class="home__mountain-2 parallax" data-rellax-speed="-8" />
+        <img src="assets/img/home-pine-tree.png" class="home__pine parallax" data-rellax-speed="-10" />
+        <img src="assets/img/home-village.png" class="home__village parallax" data-rellax-speed="-10" />
+        <img src="assets/img/home-snow.png" class="home__snow parallax" />
+        <img src="assets/img/home-mountain-1.png" class="home__mountain-1" />
+      </section>
+
+      <section class="countdown section" id="countdown">
+        <div class="container">
+          <h2 class="section__title">The Golden Magic In... ❄️</h2>
+          <div class="countdown__container">
+            <div class="countdown__box"><span class="countdown__number" id="days">00</span><span>Days</span></div>
+            <div class="countdown__box"><span class="countdown__number" id="hours">00</span><span>Hours</span></div>
+            <div class="countdown__box"><span class="countdown__number" id="minutes">00</span><span>Mins</span></div>
+            <div class="countdown__box"><span class="countdown__number" id="seconds">00</span><span>Secs</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container" style="text-align: center; padding: 3rem 0;">
+        <span class="footer__copy">&#169; Once Again A Very Happy & Merry Christmas By Mohan | ✨ Stay Magical & Be Blessed ✨</span>
+      </div>
+    </footer>
+
+    <script src="assets/js/rellax.min.js"></script>
+    <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/scrollreveal.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // small helper: toggle header blur when scrolled
+        const headerEl = document.getElementById('header');
+        const toggleHeaderBlur = () => {
+            if (window.scrollY > 40) headerEl.classList.add('header--blur');
+            else headerEl.classList.remove('header--blur');
+        };
+        window.addEventListener('scroll', toggleHeaderBlur);
+
+        /* Music Logic */
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+
+        // Improved music toggle with availability check and visual state
+        const setMusicState = (isPlaying) => {
+            if (isPlaying) {
+                musicIcon.classList.replace('ri-volume-mute-line', 'ri-volume-up-line');
+                musicBtn.style.borderColor = "var(--first-color)";
+                musicBtn.style.color = "var(--first-color)";
+                musicBtn.setAttribute('aria-pressed', 'true');
+            } else {
+                musicIcon.classList.replace('ri-volume-up-line', 'ri-volume-mute-line');
+                musicBtn.style.borderColor = "var(--title-color)";
+                musicBtn.style.color = "var(--title-color)";
+                musicBtn.setAttribute('aria-pressed', 'false');
+            }
+        }
+
+        music.addEventListener('canplay', () => {
+            musicBtn.disabled = false;
+        });
+
+        music.addEventListener('error', () => {
+            // audio file missing or broken - disable control and show tooltip
+            musicBtn.disabled = true;
+            musicBtn.title = 'Background music not available. Add assets/audio/bg-music.mp3';
+        });
+
+        const musicFileInput = document.getElementById('musicFile');
+
+        musicBtn.addEventListener('click', async () => {
+            // If packaged audio is not available, prompt user to pick a local file
+            if (musicBtn.disabled) {
+                musicFileInput.click();
+                return;
+            }
+
+            try {
+                if (music.paused) {
+                    await music.play();
+                    setMusicState(true);
+                } else {
+                    music.pause();
+                    setMusicState(false);
+                }
+            } catch (err) {
+                console.warn('Audio playback failed:', err);
+                musicBtn.disabled = true;
+                musicBtn.title = 'Unable to play audio in this browser';
+            }
+        });
+
+        // Handle user-selected local audio file
+        musicFileInput.addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            // create object URL and set as audio source
+            const url = URL.createObjectURL(file);
+            music.src = url;
+            music.load();
+            // try to play once loaded
+            try {
+                await music.play();
+                setMusicState(true);
+                musicBtn.disabled = false;
+                musicBtn.title = 'Toggle background music';
+            } catch (err) {
+                console.warn('Playback of selected file failed:', err);
+                musicBtn.title = 'Selected file could not be played';
+            }
+        });
+
+        // Initialize state based on audio readiness
+        musicBtn.disabled = true;
+        setMusicState(false);
+
+        /* Countdown Logic */
+        function updateCountdown() {
+            const target = new Date(`December 25, ${new Date().getFullYear()} 00:00:00`);
+            const now = new Date();
+            const diff = target - now;
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("days").innerText = d < 10 ? '0'+d : d;
+            document.getElementById("hours").innerText = h < 10 ? '0'+h : h;
+            document.getElementById("minutes").innerText = m < 10 ? '0'+m : m;
+            document.getElementById("seconds").innerText = s < 10 ? '0'+s : s;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        /* ================= GAME ENGINE ================= */
+        const modal = document.getElementById('gameModal');
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const highScoreEl = document.getElementById('highScore');
+
+        let score = 0;
+        let highScore = localStorage.getItem('xmasHighScore') || 0;
+        highScoreEl.innerText = highScore;
+        let gameActive = false;
+        
+        let basket = { x: 150, y: 510, w: 100, h: 50, targetX: 150 };
+        let gifts = [];
+        let particles = [];
+        let stars = [];
+
+        function openGame() {
+            modal.style.display = 'flex';
+            canvas.width = 400; canvas.height = 600;
+            score = 0; scoreEl.innerText = 0;
+            gifts = []; particles = []; stars = [];
+            
+            for(let i=0; i<80; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.05
+                });
+            }
+            
+            gameActive = true;
+            requestAnimationFrame(gameLoop);
+        }
+
+        function closeGame() { modal.style.display = 'none'; gameActive = false; }
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            basket.targetX = (e.clientX - rect.left) - basket.w / 2;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            basket.targetX = (e.touches[0].clientX - rect.left) - basket.w / 2;
+        }, { passive: true });
+
+        function drawSleigh(x, y, w, h) {
+            ctx.save();
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = 'rgba(212, 175, 55, 0.4)';
+            ctx.strokeStyle = '#f3cf6d';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(x - 5, y + h - 5);
+            ctx.quadraticCurveTo(x + w/2, y + h + 10, x + w + 5, y + h - 5);
+            ctx.stroke();
+
+            const grad = ctx.createLinearGradient(x, y, x, y + h);
+            grad.addColorStop(0, '#D4AF37');
+            grad.addColorStop(1, '#8B6B23');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.moveTo(x, y + 10);
+            ctx.quadraticCurveTo(x - 10, y + h - 10, x + 10, y + h - 10);
+            ctx.lineTo(x + w - 10, y + h - 10);
+            ctx.quadraticCurveTo(x + w + 10, y + h - 10, x + w, y + 10);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function createExplosion(x, y, color) {
+            for(let i=0; i<10; i++) {
+                particles.push({
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    life: 1.0,
+                    color: color
+                });
+            }
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+            ctx.fillStyle = '#051622';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            stars.forEach(star => {
+                ctx.fillStyle = `rgba(255,255,255, ${star.opacity})`;
+                ctx.beginPath(); ctx.arc(star.x, star.y, star.size, 0, Math.PI*2); ctx.fill();
+                star.opacity += star.speed;
+                if(star.opacity > 1 || star.opacity < 0.2) star.speed *= -1;
+            });
+
+            basket.x += (basket.targetX - basket.x) * 0.15;
+            if (basket.x < 0) basket.x = 0;
+            if (basket.x > canvas.width - basket.w) basket.x = canvas.width - basket.w;
+            
+            drawSleigh(basket.x, basket.y, basket.w, basket.h);
+
+            if (Math.random() < 0.03 + (score * 0.0005)) {
+                gifts.push({
+                    x: Math.random() * (canvas.width - 30),
+                    y: -40,
+                    speed: 3 + Math.random() * 4 + (score * 0.05),
+                    color: Math.random() > 0.5 ? '#e63946' : '#A2D2FF'
+                });
+            }
+
+            for(let i = gifts.length - 1; i >= 0; i--) {
+                let g = gifts[i];
+                g.y += g.speed;
+                ctx.fillStyle = g.color;
+                ctx.fillRect(g.x, g.y, 25, 25);
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.fillRect(g.x + 10, g.y, 5, 25);
+                ctx.fillRect(g.x, g.y + 10, 25, 5);
+
+                if (g.y + 25 > basket.y && g.x + 25 > basket.x && g.x < basket.x + basket.w) {
+                    createExplosion(g.x + 12, g.y + 12, g.color);
+                    gifts.splice(i, 1);
+                    score++;
+                    scoreEl.innerText = score;
+                    if(score > highScore) {
+                        highScore = score;
+                        highScoreEl.innerText = highScore;
+                        localStorage.setItem('xmasHighScore', highScore);
+                    }
+                } else if (g.y > canvas.height) {
+                    gifts.splice(i, 1);
+                }
+            }
+
+            for(let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.life -= 0.02;
+                if(p.life <= 0) particles.splice(i, 1);
+                else {
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.life;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI*2); ctx.fill();
+                    ctx.globalAlpha = 1;
+                }
+            }
+            requestAnimationFrame(gameLoop);
+        }
+    </script>
+</body>
+</html>
